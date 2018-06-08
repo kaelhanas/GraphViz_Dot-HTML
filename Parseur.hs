@@ -15,15 +15,24 @@ finalFilter list = 	if (last list) == '}'
 					then init list 
 					else do finalFilter list
 
+-- Fonctions pour l'affichage de liste de Tuple de String
 formatString :: (String, String) -> String
 formatString (s1,s2) = "("++s1++","++s2++")"
 
 formatStringInList :: [(String,String)] -> [String]
 formatStringInList [] = []
 formatStringInList (x:xs) = (formatString x):formatStringInList xs
-					
+
+formatString2 :: (String, String, String) -> String
+formatString2 (s1,s2,s3) = "("++s1++","++s2++","++s3++")"
+
+formatStringInList2 :: [(String,String,String)] -> [String]
+formatStringInList2 [] = []
+formatStringInList2 (x:xs) = (formatString2 x):formatStringInList2 xs
+	
 printElements :: [String] -> IO ()
 printElements = mapM_ putStrLn	
+--
 
 -- split oneOf
 myFilter :: String -> String -> [String]
@@ -95,6 +104,15 @@ rightOfArrow (x:xs) = rightOfArrow xs
 myGet :: [(String,String)] -> String -> String
 myGet l x = head [b | (a,b)<-l, a==x]
 
+analyse :: Bool -> String
+analyse b =	if b==True then return 'Q'
+			else do return 'R'
+
+isQuestion :: String -> Bool
+isQuestion [] = False
+isQuestion ('?':xs) = True
+isQuestion (_:xs) = isQuestion xs
+
 --
 
 main = do
@@ -122,7 +140,7 @@ main = do
 	let linkTupleList = linkConcat linkList
 	-- let printable2 = formatStringInList linkTupleList
 	-- printElements printable2
-	let finalList = [(myGet labelTupleList a, myGet labelTupleList b) | (a,b)<-linkTupleList]
-	let printable3 = formatStringInList finalList
+	let finalList = [(analyse(isQuestion(myGet labelTupleList a)),myGet labelTupleList a, myGet labelTupleList b) | (a,b)<-linkTupleList]
+	let printable3 = formatStringInList2 finalList
 	printElements printable3
 	
