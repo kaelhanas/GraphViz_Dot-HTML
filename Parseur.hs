@@ -1,4 +1,5 @@
 import Data.List.Split
+import Data.List.Unique
 
 
 initFilter :: String -> String
@@ -118,12 +119,14 @@ isQuestion :: String -> Bool
 isQuestion [] = False
 isQuestion ('?':xs) = True
 isQuestion (_:xs) = isQuestion xs
+--
 
--- Get 3 elements of a (String, String, String)
+-- | Suprimer les doublons d'une liste de doublet
 
-getFirst (f:_:_) = f
-getSnd (_:s:_) = s
-getThird (_:_:t) = t
+removeSame :: [(String,String)] -> [(String,String)]
+removeSame (x1:x2:xs) = if x1==x2 
+						then x1: removeSame xs
+						else do removeSame xs
 
 --
 
@@ -160,7 +163,19 @@ main = do
 	-- printElements printE
 	
 	let finalList = [(myGet labelTupleList a,myGet labelTupleList b, myGet labelTupleList c) | (a,b,c)<-test]
-	let printable3 = formatStringInList2 finalList
+	-- let printable3 = formatStringInList2 finalList
+	-- printElements printable3
+	
+	let filtredFinalList = [(a,b,c) | (a,b,c)<-finalList, (isQuestion b) == True ]
+	-- let printable3 = formatStringInList2 filtredFinalList
+	-- printElements printable3
+	
+	let questionList = sortUniq [(a,b) | (a,b,c)<-filtredFinalList]
+	let printable3 = formatStringInList questionList
 	printElements printable3
+	putStrLn("\n")
+	let answerList = [(a,c) | (a,b,c)<-filtredFinalList]
+	let printable4 = formatStringInList answerList
+	printElements printable4
 	
 	writeFile "myFile.txt" $ unlines printable3
