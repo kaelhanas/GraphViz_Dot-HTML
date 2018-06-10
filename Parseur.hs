@@ -99,19 +99,31 @@ rightOfArrow :: String -> String
 rightOfArrow ('-':'>':xs) = xs
 rightOfArrow (x:xs) = rightOfArrow xs
 
+linkable :: (String, String) -> (String, String)-> Bool
+linkable (a1,b1) (a2, b2) = if b1==a2 
+							then True
+							else do False
+
 --Editing link bewteen nodes/labels and Links
 
 myGet :: [(String,String)] -> String -> String
 myGet l x = head [b | (a,b)<-l, a==x]
 
 analyse :: Bool -> String
-analyse b =	if b==True then return 'R'
+analyse b =	if b==True 
+			then return 'R'
 			else do return 'Q'
 
 isQuestion :: String -> Bool
 isQuestion [] = False
 isQuestion ('?':xs) = True
 isQuestion (_:xs) = isQuestion xs
+
+-- Get 3 elements of a (String, String, String)
+
+getFirst (f:_:_) = f
+getSnd (_:s:_) = s
+getThird (_:_:t) = t
 
 --
 
@@ -138,9 +150,17 @@ main = do
 	-- printElements printable1
 -- Recuperation d'une liste de tuple avec (a,b) <=> a -> b
 	let linkTupleList = linkConcat linkList
+	let printableLinkTupleList = formatStringInList linkTupleList
+	-- printElements printableLinkTupleList
 	-- let printable2 = formatStringInList linkTupleList
 	-- printElements printable2
-	let finalList = [(analyse(isQuestion(myGet labelTupleList a)),myGet labelTupleList a, myGet labelTupleList b) | (a,b)<-linkTupleList]
+		
+	let test = [(a,b,d) | (a,b)<-linkTupleList, (c,d)<-linkTupleList, b == c]
+	-- let printE = formatStringInList2 test
+	-- printElements printE
+	
+	let finalList = [(myGet labelTupleList a,myGet labelTupleList b, myGet labelTupleList c) | (a,b,c)<-test]
 	let printable3 = formatStringInList2 finalList
 	printElements printable3
 	
+	writeFile "myFile.txt" $ unlines printable3
