@@ -178,4 +178,5 @@ main = do
 	let printable4 = formatStringInList answerList
 	printElements printable4
 	
-	writeFile "myFile.txt" $ unlines printable3
+	writeFile "question.txt" $ unlines printable3
+	writeFile "answer.txt" $ unlines printable4
