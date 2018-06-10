@@ -1,6 +1,0 @@
-(Dir. Etude,Quel aspect vous intéresse ?)
-(Enseignant,Quel aspect vous intéresse ?)
-(Etudiant,Quel aspect vous intéresse ?)
-(Index,Qui êtes-vous ?)
-(Scolarité,Quel aspect vous intéresse ?)
-(Stage,Quelle étape ?)
