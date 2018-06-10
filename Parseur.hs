@@ -105,8 +105,8 @@ myGet :: [(String,String)] -> String -> String
 myGet l x = head [b | (a,b)<-l, a==x]
 
 analyse :: Bool -> String
-analyse b =	if b==True then return 'Q'
-			else do return 'R'
+analyse b =	if b==True then return 'R'
+			else do return 'Q'
 
 isQuestion :: String -> Bool
 isQuestion [] = False
