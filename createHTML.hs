@@ -32,7 +32,7 @@ htmlStyle = (Node "html" [] [
 					]
 				]
 				Node "body" [] [
-					Node ("img [src="ENSISA.jpg" height="50px" width="200px""]) []
+					-- Node ("img [src="ENSISA.jpg" height="50px" width="200px""]) []
 					Node "h2" [] [
 						Question
 					]
@@ -41,13 +41,13 @@ htmlStyle = (Node "html" [] [
 							Node "a" [L "href"] [
                                 LinkTarget
                             ]
-                    ]
-				]		
-]
-			
+						]
+					]		
+				]
+]		
 
 createFiles :: String -> [Link] -> String
-createFiles subject link = printNode sibject link
+createFiles subject link = printNode subject link
 
 
 subjectFilter :: String -> [(String, a)] -> [(String, a)]
@@ -59,7 +59,8 @@ subjectFilter subject ((a, b):liste) = if a==subject
 
 printNode :: String -> [Link] -> String
 
-
+printNode subject link = subject
+printNode subect [] = []
 printNode subject ((name,_):_) = name
 printNode subject ((_,target):_) = target
 
