@@ -1,6 +1,6 @@
 import Data.List.Split
 import Data.List.Unique
-
+import CreateHTML2
 
 initFilter :: String -> String
 initFilter ('{':xs) = xs
@@ -130,6 +130,19 @@ removeSame (x1:x2:xs) = if x1==x2
 
 --
 
+getFirst :: Link -> String
+getFirst (a,b) = a
+
+getSecond :: Link -> String
+getSecond (a,b) = b
+
+getSubjects :: [Link] -> [String]
+getSubjects g = map fst g
+
+getAnswerQuestion :: [Link] -> [String]
+getAnswerQuestion g = map snd g
+
+
 main = do
 -- Lecture Fichier dot 
 	doc <- readFile "Qualite.dot"
@@ -180,3 +193,5 @@ main = do
 	
 	writeFile "question.txt" $ unlines printable3
 	writeFile "answer.txt" $ unlines printable4
+
+	-- (question, reponse) | (sujet1,question) <- L1, (sujet2,reponse) <- L2, sujet1 = sujet2

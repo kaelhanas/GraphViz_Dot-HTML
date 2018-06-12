@@ -1,8 +1,4 @@
-module createHTML 
-		(Link,
-		createFile
-		)
-		where
+module createHTML (Link, createFile) where
 
 
 -- type Link = (String, String, String)
