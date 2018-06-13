@@ -191,7 +191,29 @@ main = do
 	let printable4 = formatStringInList answerList
 	printElements printable4
 	
+	let subject1 = getSubjects questionList
+	let subject2 = getSubjects answerList
+	let question = getAnswerQuestion questionList
+	let answer = getAnswerQuestion answerList
+	
+	writeFile "sujet1.txt" $ unlines subject1
+	writeFile "sujet2.txt" $ unlines subject2
+	writeFile "answer2.txt" $ unlines answer
+	writeFile "question2.txt" $ unlines question
+	
 	writeFile "question.txt" $ unlines printable3
 	writeFile "answer.txt" $ unlines printable4
-
+	
+	let nameFile = map (++".html") subject1
+	-- let content = [(question, answer) | (subject1, question) <- questionList, (subject2, answer) <- answerList, subject1 == subject2] -> createFile subject (questionList, answerList) style) subject1
+	-- sequence(zipWith writeFile nameFile content)
+	
+	
+	
 	-- (question, reponse) | (sujet1,question) <- L1, (sujet2,reponse) <- L2, sujet1 = sujet2
+	
+	
+	
+	
+	
+	
