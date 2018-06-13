@@ -1,31 +1,35 @@
-module CreateHTML2 (Link, Style, createFile) where
+module CreateHTML2 (Question, Answer, Style, createPage, myStyle) where
 
-type Link = (String, String)
+type Question = (String, String)
+type Answer = (String, String)
 
-getFirst :: Link -> String
-getFirst (a,b) = a
+-- getFirst :: Link -> String
+-- getFirst (a,b) = a
 
-getSecond :: Link -> String
-getSecond (a,b) = b
+-- getSecond :: Link -> String
+-- getSecond (a,b) = b
 
 data Style = Style String String String String String String String String String String deriving (Show, Eq, Read)
 
-_style = (Style "<html> <head> <title>" "</title> </head> <body> <h2>" "</h2>" "<section id=relation>" "<p>" "<a href=\""  ".html\">"  "</a> </p>" "</section>" "</body> </html>")
+myStyle = (Style "<html> <head> <title>" "</title> </head> <body> <h2>" "</h2>" "<section id=relation>" "<p>" "<a href=\""  ".html\">"  "</a> </p>" "</section>" "</body> </html>")
 
-createFile :: String -> [Link] -> Style -> String
-createFile subject link style = creationFile subject link _style
 
-creationFile :: String -> [Link] -> Style -> String
-creationFile subject link (style@(Style beginPage endHead endSubject _ _ _ _ _ _ endPage)) = concat [beginPage, subject, endHead, endSubject, endPage]
+createPage :: String -> [Question] -> [Answer] -> Style -> String
+createPage subject quest ans style@(Style beginHeader endHeader endQuestion _ _ _ _ _ _ endPage) = 
+	concat[beginHeader, subject, endHeader, getQuestion subject quest, endQuestion, linkSection subject ans style, endPage] 											
+	
+getQuestion :: String -> [Question] -> String
+getQuestion _ [] = ""
+getQuestion subject ((a,b):xs) = if a==subject	then b
+												else getQuestion subject xs
+												
 
-sectionLink :: String -> [Link] -> Style -> String
-sectionLink subject link _style = section (createLink subject link _style) _style
-        where section [] _ = []
-              section links (Style _ _ _ sectionBegin _ _ _ _ sectionEnd _) = concat [sectionBegin,links,sectionEnd]
+linkSection :: String -> [Answer] -> Style -> String
+linkSection subject ans style@(Style _ _ _ beginSection _ _ _ _ endSection _) = concat[beginSection, writeAnswer subject ans style, endSection]
 
-createLink :: String -> [Link] -> Style -> String
-createLink _ [] _= ""
-createLink subject ((a,b):xs) style@(Style _ _ _ _ _ tag1 tag2 tag3 _ _ )= if a==subject 
-                                                                        then concat [b,tag1,b,tag2,tag3, createLink subject xs _style]
-                                                                        else createLink subject xs style
-
+writeAnswer :: String -> [Answer] -> Style -> String
+writeAnswer _ [] _ = ""
+writeAnswer subject ((a,b):xs) style@(Style _ _ _ _ link1 link2 link3 link4 _ _) =
+	if a==subject
+	then concat[link1,link2,b,link3,b,link4, writeAnswer subject xs style]
+	else writeAnswer subject xs style

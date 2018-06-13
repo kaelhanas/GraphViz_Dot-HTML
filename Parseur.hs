@@ -128,20 +128,6 @@ removeSame (x1:x2:xs) = if x1==x2
 						then x1: removeSame xs
 						else do removeSame xs
 
---
-
-getFirst :: Link -> String
-getFirst (a,b) = a
-
-getSecond :: Link -> String
-getSecond (a,b) = b
-
-getSubjects :: [Link] -> [String]
-getSubjects g = map fst g
-
-getAnswerQuestion :: [Link] -> [String]
-getAnswerQuestion g = map snd g
-
 
 main = do
 -- Lecture Fichier dot 
@@ -183,34 +169,36 @@ main = do
 	-- let printable3 = formatStringInList2 filtredFinalList
 	-- printElements printable3
 	
-	let questionList = sortUniq [(a,b) | (a,b,c)<-filtredFinalList]
-	let printable3 = formatStringInList questionList
-	printElements printable3
+	let questionList = sortUniq [(a,b) | (a,b,c)<-filtredFinalList]::[Question]
+	-- let printable3 = formatStringInList questionList
+	-- printElements printable3
 	putStrLn("\n")
-	let answerList = [(a,c) | (a,b,c)<-filtredFinalList]
-	let printable4 = formatStringInList answerList
-	printElements printable4
+	let answerList = [(a,c) | (a,b,c)<-filtredFinalList]::[Answer]
+	-- let printable4 = formatStringInList answerList
+	-- printElements printable4
 	
-	let subject1 = getSubjects questionList
-	let subject2 = getSubjects answerList
-	let question = getAnswerQuestion questionList
-	let answer = getAnswerQuestion answerList
+	-- let _style = (Style "<html> <head> <title>" "</title> </head> <body> <h2>" "</h2>" "<section id=relation>" "<p>" "<a href=\""  ".html\">"  "</a> </p>" "</section>" "</body> </html>")
+
+	-- writeFile "question.txt" $ unlines printable3
+	-- writeFile "answer.txt" $ unlines printable4
+	-- let testhtml = createPage "Etudiant" questionList answerList myStyle
+	-- writeFile "htmlTest.html" $ unlines [testhtml]
 	
-	writeFile "sujet1.txt" $ unlines subject1
-	writeFile "sujet2.txt" $ unlines subject2
-	writeFile "answer2.txt" $ unlines answer
-	writeFile "question2.txt" $ unlines question
 	
-	writeFile "question.txt" $ unlines printable3
-	writeFile "answer.txt" $ unlines printable4
+	-- Recuperation des sujets dans une liste
+	let subjectList = [ a | (a,b)<-questionList ]
+	let fileName = map (++".html") subjectList
+	let content = map (\subject -> createPage subject questionList answerList myStyle) subjectList
+	sequence(zipWith writeFile fileName content)
 	
-	let nameFile = map (++".html") subject1
+	
+	
+	putStrLn("fin")
+	
+	-- let nameFile = map (++".html") subject1
 	-- let content = [(question, answer) | (subject1, question) <- questionList, (subject2, answer) <- answerList, subject1 == subject2] -> createFile subject (questionList, answerList) style) subject1
 	-- sequence(zipWith writeFile nameFile content)
 	
-	
-	
-	-- (question, reponse) | (sujet1,question) <- L1, (sujet2,reponse) <- L2, sujet1 = sujet2
 	
 	
 	
